@@ -1,0 +1,60 @@
+F(y,x) := wb/2 * (y(sqrt(x))+y(-sqrt(x))) + wf/2 * x * (y(x^3)-y(-x^3)) + x^k; 
+
+A[0](x) := x^k;
+
+for i : 1 thru 40 do
+  A[i](x) := F(A[i-1],x);
+  
+wb : 0.999;
+wf : 0.995;
+k : 5;
+
+/* gnuplot, real lines plotting */
+plot2d(realpart(A[5](x)),[x,-0.99,0.99]);
+
+G(a,b,y,x) := a/2 * ( y(a,b,sqrt(x))+y(a,b,-sqrt(x)) ) + b/2 * x * ( y(a,b,x^3)-y(a,b,-x^3) ) + x^k; 
+
+B[0](a,b,x) := x^k;
+
+for i : 1 thru 40 do
+  B[i](a,b,x) := G(a,b,B[i-1],x);
+
+plot2d(B[5](0.9,0.5,x), [x, -0.99, 0.99]);
+plot2d([realpart(B[5](1,1,x)), realpart(B[5](0.9,0.9,x)), realpart(B[5](0.8,0.8,x)), realpart(B[5](0.7,0.7,x))], [x, -0.99, 0.99]);
+
+plot2d(B[5](2,2,x), [x, -0.99, 0.99]);
+
+/* Remark: simplify complicated expressions after i=5 for k=5 */
+B[6](1,1,x);
+combine(%);
+
+divide(B[6](1,1,x),B[5](1,1,x));
+
+/* complex */
+re(x) := realpart(A[7](x));
+im(x) := imagpart(A[7](x));
+
+re1(X) := re(x*(1+%i));
+im1(X) := im(x*(1+%i));
+
+re2(X) := re(x*%i);
+im2(X) := im(x*%i);
+
+re3(X) := re(x*(-1+%i));
+im3(X) := im(x*(-1+%i));
+
+plot2d([re(x), im(x)], [x, -0.2,0.2], [legend,"real part","imaginary part"]);
+plot2d([re1(x), im1(x)], [x, -0.2,0.2], [legend,"real part","imaginary part"]);
+plot2d([re2(x), im2(x)], [x, -0.2,0.2], [legend,"real part","imaginary part"]);
+plot2d([re3(x), im3(x)], [x, -0.2,0.2], [legend,"real part","imaginary part"]);
+
+
+/* complex plot */
+plot3d(realpart(A[7](x+%i*y)), [x,-0.1,0.1], [y,-0.1,0.1],[grid,12,12],[gnuplot_pm3d,true],
+[gnuplot_preamble,"unset surface;set contour;set cntrparam levels 20; set key"]);
+
+plot3d(realpart(A[7](x+%i*y)), [x,-0.1,0.1], [y,-0.1,0.1],[grid,5,5],[gnuplot_pm3d,true],[gnuplot_preamble,"set surface;set contour;set cntrparam levels 20; set key"]);
+
+plot3d([realpart(A[7](x+%i*y)),imagpart(A[7](x+%i*y)),[x,-0.1,0.1], [y,-0.1,0.1]]);
+
+/*  */
