@@ -5,13 +5,16 @@ A[0](x) := x^k;
 for i : 1 thru 40 do
   A[i](x) := F(A[i-1],x);
   
-wb : 0.999;
-wf : 0.995;
+wb : 0.45;
+wf : 0.45;
 k : 5;
 
 /* gnuplot, real lines plotting */
-plot2d(realpart(A[5](x)),[x,-0.99,0.99]);
+plot2d(realpart(A[5](x)),[x,-0.1,0.1]);
 
+plot2d(diff(realpart(A[5](x)),x),[x,-0.1,0.1]);
+
+/* play with weights
 G(a,b,y,x) := a/2 * ( y(a,b,sqrt(x))+y(a,b,-sqrt(x)) ) + b/2 * x * ( y(a,b,x^3)-y(a,b,-x^3) ) + x^k; 
 
 B[0](a,b,x) := x^k;
@@ -29,6 +32,7 @@ B[6](1,1,x);
 combine(%);
 
 divide(B[6](1,1,x),B[5](1,1,x));
+*/
 
 /* complex */
 re(x) := realpart(A[7](x));
